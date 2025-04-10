@@ -1,0 +1,51 @@
+# 🦉 Owly - Progetto PHP + MySQL  
+**Autore:** Manuel Spoladore
+
+## Descrizione del progetto
+
+Owly è una piattaforma pensata per offrire percorsi complementari all’apprendimento primario. L'obiettivo è sviluppare **corsi cross-funzionali** che possano coinvolgere più materie, stimolando la curiosità e la partecipazione dei più piccoli.
+
+Questo progetto consiste nello sviluppo di un'API RESTful in PHP per la gestione di questi corsi e delle relative materie.
+
+## Tecnologie utilizzate
+
+- PHP (con PDO per la sicurezza contro SQL Injection)
+- MySQL (gestito tramite XAMPP)
+- Postman (per il test delle API)
+- JSON per la struttura delle risposte
+
+## Struttura del progetto
+
+La struttura delle cartelle è organizzata come segue:
+
+
+- **/config**: contiene i file di configurazione del database.
+- **/models**: include le classi comuni e i modelli dati.
+- **/corso** e **/materia**: contengono i file CRUD per la gestione dei rispettivi elementi.
+
+## Funzionalità principali
+
+- **CRUD completo** per `corsi` e `materie`
+- **Sanitizzazione dei dati** e sicurezza tramite **PDO**
+- **Endpoint di filtro** `reading_with_materia.php` per:
+  - Visualizzare l’elenco dei corsi
+  - Filtrare per **nome**, **materia** o **posti disponibili**
+
+## Test delle API
+
+Le API sono state testate tramite Postman e risultano funzionanti per:
+
+- **Creazione**
+- **Lettura (singola e multipla, con filtri)**
+- **Aggiornamento**
+- **Eliminazione**
+
+## Possibili sviluppi futuri
+
+- Realizzazione di una **interfaccia frontend** per la gestione e la visualizzazione dei corsi
+- Aggiunta di un sistema di autenticazione per utenti e amministratori
+- Dashboard con statistiche sull'uso dei corsi
+
+---
+
+🎓 *Owly vuole rendere l'apprendimento un'esperienza più aperta, flessibile e divertente!*  
