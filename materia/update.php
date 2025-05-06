@@ -1,5 +1,5 @@
 <?php
-//impostazione header http
+//setting header http
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -7,29 +7,29 @@ header("Access-Control-Allow-Methods:POST");
 header("Access-Control-Max-Age:3600");
 header("Access-Control-Allow-Header: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-//Inclusione file necessari
+//Including necessary files
 include_once "../config/database.php";
-include_once "../models/materia.php";
+include_once "../models/subject.php";
 
-//Creazione dell'oggetto Database e connessione al database
+// Object database creation and connection to the database
 $database = new Database();
 $db = $database->getConnection();
 
-//Creazione oggetto corso
-$materia = new Materia($db);
+//Object Course creation
+$subject = new Subject($db);
 
-//Recupero dei dati inviati con POST
+//Retrieving data sent with POST
 $data = json_decode(file_get_contents("php://input"));
 
 
-//verifica presenza campi necessari
+//check for the presence of necessary fields
 
-if (!empty($data->id) && !empty($data->nome_materia)) {
-    $materia->id = $data->id;
-    $materia->nome_materia = $data->nome_materia;
+if (!empty($data->id) && !empty($data->subject_name)) {
+    $subject->id = $data->id;
+    $subject->subject_name = $data->subject_name;
 
 
-    if ($materia->update()) {
+    if ($subject->update()) {
         http_response_code(201);
         echo json_encode(array("message" => "Corso aggiornato con successo"));
     } else {

@@ -1,47 +1,47 @@
 <?php
 
-// Impostazione header
+//setting header http
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-// Inclusione file necessari
+//Including necessary files
 include_once "../config/database.php";
-include_once "../models/materia.php";
+include_once "../models/subject.php";
 
-// Creazione dell'oggetto Database e connessione al database
+// Object database creation and connection to the database
 $database = new Database();
 $db = $database->getConnection();
 
-// Creazione oggetto materia
-$materia = new Materia($db);
+//Object Course creation
+$subject = new Subject($db);
 
-// Esecuzione della query per leggere i corsi
-$stmt = $materia->read();
+//Retrieving data sent with POST
+$stmt = $subject->read();
 $num = $stmt->rowCount();
 
-// Verifica se sono stati trovati corsi
+//check for the presence of necessary fields
 if ($num > 0) {
-    // Array per i corsi
-    $materie_arr = array();
-    $materie_arr["record"] = array();
+    // Courses array
+    $subjects_arr = array();
+    $subjects_arr["record"] = array();
 
-    // Recupero dei dati dei corsi
+    //Retrieving data sent with POST
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
-        $materia_item = array(
+        $subject_item = array(
             "id" => $id,
-            "nome_materia" => $nome_materia
+            "subject_name" => $subject_name
         );
-        array_push($materie_arr["record"], $materia_item);
+        array_push($subjects_arr["record"], $subject_item);
     }
 
-    // codice risposta 200 e ritorno dati
+    // 200
     http_response_code(200);
-    echo json_encode($materia_arr);
+    echo json_encode($subject_arr);
 } else {
-    //nessuna materia  trovata , 404 
+    //404
     http_response_code(404);
-    echo json_encode(array("message" => "Nessuna materia trovata"));
+    echo json_encode(array("message" => "No subject founded"));
 }
 
 

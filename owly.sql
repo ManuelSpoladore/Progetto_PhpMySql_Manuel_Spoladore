@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Apr 10, 2025 alle 10:11
+-- Creato il: Mag 06, 2025 alle 09:43
 -- Versione del server: 10.4.32-MariaDB
 -- Versione PHP: 8.2.12
 
@@ -26,20 +26,21 @@ USE `owly`;
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `corsi`
+-- Struttura della tabella `courses`
 --
 
-CREATE TABLE `corsi` (
+DROP TABLE IF EXISTS `courses`;
+CREATE TABLE `courses` (
   `id` int(11) NOT NULL,
-  `nome_corso` varchar(255) DEFAULT NULL,
-  `posti_disponibili` int(11) DEFAULT NULL
+  `course_name` varchar(255) DEFAULT NULL,
+  `available_places` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `corsi`
+-- Dump dei dati per la tabella `courses`
 --
 
-INSERT INTO `corsi` (`id`, `nome_corso`, `posti_disponibili`) VALUES
+INSERT INTO `courses` (`id`, `course_name`, `available_places`) VALUES
 (5, 'Introduzione alla Filosofia', 20),
 (6, 'Fondamenti di Programmazione con Python', 25),
 (7, 'Storia dell’Arte Contemporanea', 18),
@@ -49,62 +50,27 @@ INSERT INTO `corsi` (`id`, `nome_corso`, `posti_disponibili`) VALUES
 (11, 'Psicologia del Lavoro e delle Organizzazioni', 20),
 (12, 'Statistica per le Scienze Sociali', 24),
 (13, 'Letteratura Italiana: da Dante a Calvino', 16),
-(14, 'Sviluppo Sostenibile e Cambiamento Climatico', 28);
+(14, 'Sviluppo Sostenibile e Cambiamento Climatico', 28),
+(17, 'PHP for Beginners', 20),
+(20, 'Frontend Foundations', 25);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `corso_materia`
+-- Struttura della tabella `subjects`
 --
 
-CREATE TABLE `corso_materia` (
+DROP TABLE IF EXISTS `subjects`;
+CREATE TABLE `subjects` (
   `id` int(11) NOT NULL,
-  `corso_id` int(11) DEFAULT NULL,
-  `materia_id` int(11) DEFAULT NULL
+  `subject_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dump dei dati per la tabella `corso_materia`
+-- Dump dei dati per la tabella `subjects`
 --
 
-INSERT INTO `corso_materia` (`id`, `corso_id`, `materia_id`) VALUES
-(3, 5, 1),
-(4, 5, 2),
-(5, 6, 3),
-(6, 6, 20),
-(7, 7, 5),
-(8, 7, 6),
-(9, 8, 7),
-(10, 8, 8),
-(11, 9, 9),
-(12, 9, 10),
-(13, 10, 11),
-(14, 10, 12),
-(15, 11, 13),
-(16, 11, 14),
-(17, 12, 15),
-(18, 12, 16),
-(19, 13, 17),
-(20, 13, 18),
-(21, 14, 19),
-(22, 14, 16);
-
--- --------------------------------------------------------
-
---
--- Struttura della tabella `materie`
---
-
-CREATE TABLE `materie` (
-  `id` int(11) NOT NULL,
-  `nome_materia` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dump dei dati per la tabella `materie`
---
-
-INSERT INTO `materie` (`id`, `nome_materia`) VALUES
+INSERT INTO `subjects` (`id`, `subject_name`) VALUES
 (1, 'Filosofia Antica'),
 (2, 'Etica e Filosofia Morale'),
 (3, 'Fondamenti di Python'),
@@ -124,64 +90,107 @@ INSERT INTO `materie` (`id`, `nome_materia`) VALUES
 (17, 'Letteratura Medievale'),
 (18, 'Letteratura Contemporanea'),
 (19, 'Fisica Meccanica'),
-(20, 'Fondamenti di Informatica');
+(20, 'Fondamenti di Informatica'),
+(21, 'HTML Basics');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `subject_courses`
+--
+
+DROP TABLE IF EXISTS `subject_courses`;
+CREATE TABLE `subject_courses` (
+  `id` int(11) NOT NULL,
+  `course_id` int(11) DEFAULT NULL,
+  `subject_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dump dei dati per la tabella `subject_courses`
+--
+
+INSERT INTO `subject_courses` (`id`, `course_id`, `subject_id`) VALUES
+(3, 5, 1),
+(4, 5, 2),
+(5, 6, 3),
+(6, 6, 20),
+(7, 7, 5),
+(8, 7, 6),
+(9, 8, 7),
+(10, 8, 8),
+(11, 9, 9),
+(12, 9, 10),
+(13, 10, 11),
+(14, 10, 12),
+(15, 11, 13),
+(16, 11, 14),
+(17, 12, 15),
+(18, 12, 16),
+(19, 13, 17),
+(20, 13, 18),
+(21, 14, 19),
+(22, 14, 16),
+(23, 17, 1),
+(24, 17, 2),
+(28, 20, 4);
 
 --
 -- Indici per le tabelle scaricate
 --
 
 --
--- Indici per le tabelle `corsi`
+-- Indici per le tabelle `courses`
 --
-ALTER TABLE `corsi`
+ALTER TABLE `courses`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `corso_materia`
+-- Indici per le tabelle `subjects`
 --
-ALTER TABLE `corso_materia`
+ALTER TABLE `subjects`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indici per le tabelle `subject_courses`
+--
+ALTER TABLE `subject_courses`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `corso_id` (`corso_id`),
-  ADD KEY `materia_id` (`materia_id`);
-
---
--- Indici per le tabelle `materie`
---
-ALTER TABLE `materie`
-  ADD PRIMARY KEY (`id`);
+  ADD KEY `corso_id` (`course_id`),
+  ADD KEY `materia_id` (`subject_id`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
 --
 
 --
--- AUTO_INCREMENT per la tabella `corsi`
+-- AUTO_INCREMENT per la tabella `courses`
 --
-ALTER TABLE `corsi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT per la tabella `corso_materia`
---
-ALTER TABLE `corso_materia`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-
---
--- AUTO_INCREMENT per la tabella `materie`
---
-ALTER TABLE `materie`
+ALTER TABLE `courses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT per la tabella `subjects`
+--
+ALTER TABLE `subjects`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT per la tabella `subject_courses`
+--
+ALTER TABLE `subject_courses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Limiti per le tabelle scaricate
 --
 
 --
--- Limiti per la tabella `corso_materia`
+-- Limiti per la tabella `subject_courses`
 --
-ALTER TABLE `corso_materia`
-  ADD CONSTRAINT `corso_materia_ibfk_1` FOREIGN KEY (`corso_id`) REFERENCES `corsi` (`id`),
-  ADD CONSTRAINT `corso_materia_ibfk_2` FOREIGN KEY (`materia_id`) REFERENCES `materie` (`id`);
+ALTER TABLE `subject_courses`
+  ADD CONSTRAINT `subject_courses_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`),
+  ADD CONSTRAINT `subject_courses_ibfk_2` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

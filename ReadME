@@ -1,51 +1,84 @@
-# 🦉 Owly - Progetto PHP + MySQL  
-**Autore:** Manuel Spoladore
+# 🦉 Owly - PHP + MySQL API Project  
+**Author:** Manuel Spoladore
 
-## Descrizione del progetto
+## Project Description
 
-Owly è una piattaforma pensata per offrire percorsi complementari all’apprendimento primario. L'obiettivo è sviluppare **corsi cross-funzionali** che possano coinvolgere più materie, stimolando la curiosità e la partecipazione dei più piccoli.
+Owly is a backend platform designed to support complementary learning paths for students. The goal is to offer **cross-functional courses** that integrate multiple subjects, sparking curiosity and active participation in younger learners.
 
-Questo progetto consiste nello sviluppo di un'API RESTful in PHP per la gestione di questi corsi e delle relative materie.
-
-## Tecnologie utilizzate
-
-- PHP (con PDO per la sicurezza contro SQL Injection)
-- MySQL (gestito tramite XAMPP)
-- Postman (per il test delle API)
-- JSON per la struttura delle risposte
-
-## Struttura del progetto
-
-La struttura delle cartelle è organizzata come segue:
-
-
-- **/config**: contiene i file di configurazione del database.
-- **/models**: include le classi comuni e i modelli dati.
-- **/corso** e **/materia**: contengono i file CRUD per la gestione dei rispettivi elementi.
-
-## Funzionalità principali
-
-- **CRUD completo** per `corsi` e `materie`
-- **Sanitizzazione dei dati** e sicurezza tramite **PDO**
-- **Endpoint di filtro** `reading_with_materia.php` per:
-  - Visualizzare l’elenco dei corsi
-  - Filtrare per **nome**, **materia** o **posti disponibili**
-
-## Test delle API
-
-Le API sono state testate tramite Postman e risultano funzionanti per:
-
-- **Creazione**
-- **Lettura (singola e multipla, con filtri)**
-- **Aggiornamento**
-- **Eliminazione**
-
-## Possibili sviluppi futuri
-
-- Realizzazione di una **interfaccia frontend** per la gestione e la visualizzazione dei corsi
-- Aggiunta di un sistema di autenticazione per utenti e amministratori
-- Dashboard con statistiche sull'uso dei corsi
+This project provides a **RESTful API built with PHP and MySQL** to manage both courses and subjects.
 
 ---
 
-🎓 *Owly vuole rendere l'apprendimento un'esperienza più aperta, flessibile e divertente!*  
+## Technologies Used
+
+- **PHP** (with PDO for secure DB interactions)
+- **MySQL** (managed via XAMPP)
+- **Postman** (for testing the API endpoints)
+- **JSON** (as response format for all endpoints)
+
+---
+
+## Project Structure
+
+The folder architecture is organized as follows:
+
+
+> All requests are routed through `/public/index.php` using `.htaccess` with Apache’s mod_rewrite.
+
+---
+
+## Main Features
+
+- ✅ Full **CRUD operations** for `courses` and `subjects`
+- 🔒 Data **sanitization and validation** via **PDO**
+- 🔀 One-to-many and many-to-many relationships between courses and subjects
+- 📚 `GET /courses/full` endpoint returns:
+  - Course name
+  - Available places
+  - Associated subject names (not just IDs)
+
+---
+
+## Available API Endpoints
+
+### 📘 Courses
+
+| Method | Endpoint               | Description                      |
+|--------|------------------------|----------------------------------|
+| POST   | `/courses/create`      | Create a new course              |
+| GET    | `/courses`             | Get all courses                  |
+| GET    | `/courses/full`        | Get courses with subjects        |
+| POST   | `/courses/update`      | Update a course                  |
+| POST   | `/courses/delete`      | Delete a course                  |
+
+### 📚 Subjects
+
+| Method | Endpoint               | Description                      |
+|--------|------------------------|----------------------------------|
+| POST   | `/subjects/create`     | Create a new subject             |
+| GET    | `/subjects`            | Get all subjects                 |
+| POST   | `/subjects/update`     | Update a subject                 |
+| POST   | `/subjects/delete`     | Delete a subject                 |
+
+---
+
+## API Testing
+
+All endpoints have been tested using **Postman** and are fully functional for:
+
+- Creating new records
+- Reading single and multiple records
+- Updating records
+- Deleting records
+
+---
+
+## Possible Future Enhancements
+
+- Development of a **frontend interface** (e.g., with React or Vue)  
+- Implementation of **user authentication** (JWT/session-based)  
+- Admin dashboard with **analytics and course statistics**
+
+---
+
+🎓 *Owly's mission is to make learning more open, flexible, and fun!*
