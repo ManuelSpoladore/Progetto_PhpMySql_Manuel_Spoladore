@@ -15,7 +15,7 @@ class Course
         $this->conn = $db;
     }
 
-    // Retrieve all courses (basic)
+ 
     public function read()
     {
         $query = "SELECT id, course_name, available_places FROM " . $this->table_name;
@@ -49,7 +49,7 @@ class Course
                 $link_stmt = $this->conn->prepare($link_query);
                 $link_stmt->bindParam(":course_id", $this->id);
                 $link_stmt->bindParam(":subject_id", $subject_id);
-                $link_stmt->execute(); // You may check return values if needed
+                $link_stmt->execute(); 
             }
 
             return true;

@@ -4,7 +4,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 // Get and normalize the request URI
 $request = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Detect base path (e.g., /public) and remove it from the request
+// Detect base path and remove it from the request
 $scriptName = dirname($_SERVER['SCRIPT_NAME']);
 $path = str_replace($scriptName, '', $request);
 $path = urldecode($path);
@@ -14,7 +14,7 @@ $path = trim($path, "/ \t\n\r\0\x0B");
 require_once __DIR__ . '/../controllers/CourseController.php';
 require_once __DIR__ . '/../controllers/SubjectController.php';
 
-// Define available routes and their associated HTTP method and controller method
+//  routes and their associated HTTP method and controller method
 $routes = [
     // Course routes
     'courses/create'  => ['POST', 'create'],
