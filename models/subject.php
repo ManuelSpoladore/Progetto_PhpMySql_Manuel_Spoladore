@@ -5,7 +5,7 @@ class Subject
     private $conn;
     private $table_name = "subjects";
 
-    //Properties
+    // Properties
     public $id;
     public $subject_name;
 
@@ -15,84 +15,62 @@ class Subject
         $this->conn = $db;
     }
 
-    // Visualize available places
-
-    function read()
+    // Read all subjects
+    public function read()
     {
         $query = "SELECT id, subject_name FROM " . $this->table_name;
-
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-
         return $stmt;
     }
-    // create new subject
-    function create()
+
+    // Create a new subject
+    public function create()
     {
-        $query = "INSERT INTO " . $this->table_name . " 
-              SET id = :id, subject_name = :subject_name";
+        $query = "INSERT INTO " . $this->table_name . " (subject_name) VALUES (:subject_name)";
         $stmt = $this->conn->prepare($query);
 
-        // sanitizing input
-        $this->id = htmlspecialchars(strip_tags($this->id));
+        // Sanitize input
         $this->subject_name = htmlspecialchars(strip_tags($this->subject_name));
 
-        //Binding parameters
-        $stmt->bindParam(":id", $this->id);
+        // Bind parameters
         $stmt->bindParam(":subject_name", $this->subject_name);
 
-        //Query execution
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute();
     }
 
-
-    //update existing subject
-
-    function update()
+    // Update an existing subject
+    public function update()
     {
-
-        $query = "UPDATE " . $this->table_name . " SET subject_name = :subject_name WHERE id = :id";
+        $query = "UPDATE " . $this->table_name . " 
+                  SET subject_name = :subject_name 
+                  WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
 
-        // sanitizing input
+        // Sanitize input
         $this->id = htmlspecialchars(strip_tags($this->id));
         $this->subject_name = htmlspecialchars(strip_tags($this->subject_name));
 
-        //Binding parameters
+        // Bind parameters
         $stmt->bindParam(":id", $this->id);
         $stmt->bindParam(":subject_name", $this->subject_name);
 
-        //Query execution
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute();
     }
 
-    // Delete course
-    function delete()
+    // Delete a subject
+    public function delete()
     {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
-
         $stmt = $this->conn->prepare($query);
 
-        // sanitizing input
+        // Sanitize input
         $this->id = htmlspecialchars(strip_tags($this->id));
 
-        //Binding parameters
+        // Bind parameters
         $stmt->bindParam(":id", $this->id);
 
-        //Query execution
-        if ($stmt->execute()) {
-            return true;
-        }
-
-        return false;
+        return $stmt->execute();
     }
 }

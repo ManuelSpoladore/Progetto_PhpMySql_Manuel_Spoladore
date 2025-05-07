@@ -26,6 +26,7 @@ $routes = [
     // Subject routes
     'subjects/create' => ['POST', 'create'],
     'subjects'        => ['GET',  'read'],
+    'subjects/update' => ['POST', 'update'],
     'subjects/delete' => ['POST', 'delete'],
 ];
 
