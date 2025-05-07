@@ -41,7 +41,7 @@ class Course
         if ($stmt->execute()) {
             $this->id = $this->conn->lastInsertId();
 
-            // Insert entries into course_subject linking table
+            // Insert entries into subject_courses linking table
             foreach ($subject_id as $subject_id) {
                 $subject_id = htmlspecialchars(strip_tags($subject_id));
                 $link_query = "INSERT INTO subject_courses (course_id, subject_id) 
@@ -58,38 +58,75 @@ class Course
         return false;
     }
 
-    // Update an existing course
-    public function update()
-    {
-        $query = "UPDATE " . $this->table_name . " 
-                  SET available_places = :available_places, course_name = :course_name 
-                  WHERE id = :id";
+    public function update($subjects_ids = [])
+{
+    // Update course basic information
+    $query = "UPDATE " . $this->table_name . " 
+              SET course_name = :course_name, available_places = :available_places 
+              WHERE id = :id";
 
-        $stmt = $this->conn->prepare($query);
+    $stmt = $this->conn->prepare($query);
 
-        // Sanitize input
-        $this->id = htmlspecialchars(strip_tags($this->id));
-        $this->course_name = htmlspecialchars(strip_tags($this->course_name));
-        $this->available_places = htmlspecialchars(strip_tags($this->available_places));
+    // Sanitize input
+    $this->id = htmlspecialchars(strip_tags($this->id));
+    $this->course_name = htmlspecialchars(strip_tags($this->course_name));
+    $this->available_places = htmlspecialchars(strip_tags($this->available_places));
 
-        $stmt->bindParam(":id", $this->id);
-        $stmt->bindParam(":course_name", $this->course_name);
-        $stmt->bindParam(":available_places", $this->available_places);
+    // Bind parameters
+    $stmt->bindParam(":id", $this->id);
+    $stmt->bindParam(":course_name", $this->course_name);
+    $stmt->bindParam(":available_places", $this->available_places);
 
-        return $stmt->execute();
+    // Execute the main update query
+    if (!$stmt->execute()) {
+        return false;
     }
+
+    // If no subjects are passed, skip relationship update
+    if (!is_array($subjects_ids)) {
+        return true;
+    }
+
+    // Delete existing course-subject relationships
+    $deleteQuery = "DELETE FROM subject_courses WHERE course_id = :course_id";
+    $deleteStmt = $this->conn->prepare($deleteQuery);
+    $deleteStmt->bindParam(":course_id", $this->id);
+    $deleteStmt->execute();
+
+    // Insert new course-subject relationships
+    foreach ($subjects_ids as $subject_id) {
+        $subject_id = htmlspecialchars(strip_tags($subject_id));
+
+        $insertQuery = "INSERT INTO subject_courses (course_id, subject_id) VALUES (:course_id, :subject_id)";
+        $insertStmt = $this->conn->prepare($insertQuery);
+        $insertStmt->bindParam(":course_id", $this->id);
+        $insertStmt->bindParam(":subject_id", $subject_id);
+        $insertStmt->execute();
+    }
+
+    return true;
+}
+
 
     // Delete a course by ID
     public function delete()
     {
+        // First, delete all relations in the pivot table
+        $deleteRelationsQuery = "DELETE FROM subject_courses WHERE course_id = :course_id";
+        $stmtRelations = $this->conn->prepare($deleteRelationsQuery);
+        $stmtRelations->bindParam(":course_id", $this->id);
+        $stmtRelations->execute();
+    
+        // Then delete the course itself
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
-
         $stmt = $this->conn->prepare($query);
+    
         $this->id = htmlspecialchars(strip_tags($this->id));
         $stmt->bindParam(":id", $this->id);
-
+    
         return $stmt->execute();
     }
+    
 
     // Read courses along with their associated subjects
     public function readWithSubjects()

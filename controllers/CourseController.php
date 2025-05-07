@@ -102,32 +102,40 @@ class CourseController
     public function update()
     {
         $this->setJsonHeaders();
-
+    
         $database = new Database();
         $db = $database->getConnection();
         $course = new Course($db);
-
+    
         $data = json_decode(file_get_contents("php://input"));
-
-        if (empty($data->id) || empty($data->course_name) || empty($data->available_places)) {
+    
+        // Now includes check for subject_id array
+        if (
+            empty($data->id) ||
+            empty($data->course_name) ||
+            !isset($data->available_places) ||
+            !is_array($data->subject_id)
+        ) {
             http_response_code(400);
             echo json_encode(["message" => "Incomplete data, unable to update course"]);
             return;
         }
-
+    
         $course->id = $data->id;
         $course->course_name = $data->course_name;
         $course->available_places = $data->available_places;
-
-        if (!$course->update()) {
+    
+        // Pass subject_id array to model
+        if (!$course->update($data->subject_id)) {
             http_response_code(503);
             echo json_encode(["message" => "Unable to update course"]);
             return;
         }
-
+    
         http_response_code(200);
         echo json_encode(["message" => "Course updated successfully"]);
     }
+    
 
     public function delete()
     {
