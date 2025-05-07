@@ -21,6 +21,25 @@ This project provides a **RESTful API built with PHP and MySQL** to manage both 
 ## Project Structure
 
 The folder architecture is organized as follows:
+/config                 # Database and global configuration
+├── config.php          # General settings 
+├── database.php        # Database connection setup
+
+/controllers            #  Logic handlers
+├── CourseController.php    # Controller for course-related logic
+├── SubjectController.php   # Controller for subject-related logic
+
+/models                 # Data representation classes
+├── course.php          # Model for courses
+├── subject.php         # Model for subjects
+
+/routes                 # Route definitions
+├── router.php          # Maps URLs to controllers
+
+/public                 # Entry point and publicly accessible files
+├── index.php           # Front controller
+├── .htaccess           # Apache URL rewriting rules
+
 
 
 > All requests are routed through `/public/index.php` using `.htaccess` with Apache’s mod_rewrite.
